@@ -30,6 +30,7 @@ import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,19 +79,18 @@ public class VideoSvc {
 	}
 	
 	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH + "/{id}", method = RequestMethod.GET)
-	public @ResponseBody Video getVideoById(@RequestParam("id") long id){	
+	public @ResponseBody Video getVideoById(@PathVariable("id") long id){	
 		return videos.findOne(id);
 	}
 	
 	@RequestMapping(value =  VideoSvcApi.VIDEO_SVC_PATH, method = RequestMethod.POST)
 	public @ResponseBody Video addVideo(@RequestBody Video v){
 		v.setLikes(0);
-		videos.save(v);
-		return videos.findOne(v.getId());
+		return videos.save(v);
 	}
 	
-	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH + "/{id}/like")
-	public void likeVideo(@RequestParam("id") long id, HttpServletRequest request, HttpServletResponse response){
+	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH + "/{id}/like", method = RequestMethod.POST)
+	public @ResponseBody void likeVideo(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response){
 		Video video = videos.findOne(id);
 		if(video != null){
 			Set<String> users = video.getLikesUserNames();
@@ -112,7 +112,7 @@ public class VideoSvc {
 	
 	//@POST(VIDEO_SVC_PATH + "/{id}/unlike")
 	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH + "/{id}/unlike", method = RequestMethod.POST)
-	public void unlikeVideo(@RequestParam("id") long id, HttpServletRequest request, HttpServletResponse response){
+	public @ResponseBody void unlikeVideo(@PathVariable("id") long id, HttpServletRequest request, HttpServletResponse response){
 		Video video = videos.findOne(id);
 		if(video != null){
 			Set<String> users = video.getLikesUserNames();
@@ -143,7 +143,7 @@ public class VideoSvc {
 	}
 	
 	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH + "/{id}/likedby", method =  RequestMethod.GET)
-	public Collection<String> getUsersWhoLikedVideo(@RequestParam("id") long id, HttpServletResponse response){
+	public @ResponseBody Collection<String> getUsersWhoLikedVideo(@PathVariable("id") long id, HttpServletResponse response){
 		Video video = videos.findOne(id);
 		Set<String> users = null;
 		if(video != null){
