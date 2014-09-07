@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Controller
+//@Controller
 public class AnEmptyController {
 	
 	/**
@@ -43,9 +43,9 @@ public class AnEmptyController {
 	 * 
 	 */
 	
-	@RequestMapping(value="/go",method=RequestMethod.GET)
+	/*@RequestMapping(value="/go",method=RequestMethod.GET)
 	public @ResponseBody String goodLuck(){
 		return "Good Luck!";
-	}
+	}*/
 	
 }
